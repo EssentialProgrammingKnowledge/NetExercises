@@ -4,8 +4,15 @@ using Exercise1.Services;
 Distance distance = Distance.New(100);
 Console.WriteLine($"Distance {distance.DisplayAsKilometers()}");
 Console.WriteLine($"Distance {distance.DisplayAsMiles()}");
-License license = new () { Value = "      " };
-Console.WriteLine($"License: {license}");
+try
+{
+    License license = new("2023/06/11/1");
+    Console.WriteLine($"License: {license}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
 
 UserService userService = new ();
 userService.Add(new User { Email = "test@test.com", Name = "Test", Password = "password" });
