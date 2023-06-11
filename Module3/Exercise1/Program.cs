@@ -16,10 +16,10 @@ catch (Exception ex)
 
 UserService userService = new ();
 userService.Add(new User { Email = "test@test.com", Name = "Test", Password = "password" });
-userService.Get(1);
+Console.WriteLine(userService.Get(1));
 ProductService productService = new ();
 productService.Add(new Product { Name = "Product#1", Category = "Category#1", Description = "Description" });
-productService.Get(1);
+Console.WriteLine(productService.Get(1));
 CartService cartService = new ();
 cartService.Add(new Cart { ProductId = 1, UserId = 1 });
-cartService.Get(1);
+Console.WriteLine(cartService.Get(1));
