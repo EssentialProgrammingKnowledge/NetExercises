@@ -1,8 +1,7 @@
 ﻿namespace Exercise1.Services
 {
-    public class Cart
+    public class Cart : BaseObject
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public int UserId { get; set; }
 
