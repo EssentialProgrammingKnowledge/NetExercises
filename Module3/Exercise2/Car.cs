@@ -1,25 +1,24 @@
 ﻿namespace Task2
 {
-    public class Car
+    public abstract class Car
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
 
-        public void Honk()
+        public virtual void Honk()
         {
             Console.WriteLine("Horn");
         }
 
-        public void Start()
-        {
-            Console.WriteLine("Start!");
-        }
+        public abstract void Start();
 
-        public void Stop()
+        public abstract void Stop();
+
+        public void Abs()
         {
-            Console.WriteLine("Stop!");
+            Stop();
         }
     }
 }
