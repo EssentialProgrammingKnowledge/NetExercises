@@ -6,7 +6,7 @@
 
         public void Add(HeadphonesDto item)
         {
-            _list.Add(new () { Id = item.Id, Name = item.Name });
+            _list.Add(item.AsEntity());
         }
 
         public HeadphonesDto? Get(int id)
@@ -15,11 +15,7 @@
             {
                 if (item.Id == id)
                 {
-                    return new ()
-                    {
-                        Id = item.Id,
-                        Name = item.Name
-                    };
+                    return item.AsDto();
                 }
             }
 
