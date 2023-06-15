@@ -1,10 +1,8 @@
 ﻿namespace Exercise2.Management
 {
-    public class PermissionService
+    public class PermissionService : BaseService<Permission, PermissionDto>
     {
-        private readonly List<Permission> _permissions = new ();
-
-        public bool Add(PermissionDto permissionDto)
+        public override bool Add(PermissionDto permissionDto)
         {
             if (string.IsNullOrWhiteSpace(permissionDto.PermisionName))
             {
@@ -16,33 +14,12 @@
                 return false;
             }
 
-            var permission = new Permission()
-            { 
-                Id = permissionDto.Id, 
-                PermisionName = permissionDto.PermisionName, 
-                PermissionValue = permissionDto.PermissionValue 
-            };
-            permission.Id = _permissions.Count > 0 ? _permissions[^1].Id + 1 : 1;
-            _permissions.Add(permission);
-            return true;
+            return base.Add(permissionDto);
         }
 
-        public bool Delete(int id)
+        public override bool Update(PermissionDto permissionDto)
         {
-            var permission = GetPermission(id);
-
-            if (permission is null)
-            {
-                return false;
-            }
-
-            _permissions.Remove(permission);
-            return true;
-        }
-
-        public bool Update(PermissionDto permissionDto)
-        {
-            var permission = GetPermission(permissionDto.Id);
+            var permission = GetEntity(permissionDto.Id);
 
             if (permission is null)
             {
@@ -59,56 +36,17 @@
                 return false;
             }
 
-            permission.PermisionName = permissionDto.PermisionName;
-            permission.PermissionValue = permissionDto.PermissionValue;
-            return true;
+            return base.Update(permissionDto);
         }
 
-        public PermissionDto? Get(int id)
+        protected override PermissionDto? Map(Permission? entity)
         {
-            var permission = GetPermission(id);
-
-            if (permission is null)
-            {
-                return null;
-            }
-
-            return new ()
-            {
-                Id = permission.Id,
-                PermisionName = permission.PermisionName,
-                PermissionValue = permission.PermissionValue
-            };
+            return entity.AsDto();
         }
 
-        public IReadOnlyList<PermissionDto> GetAll()
+        protected override Permission? Map(PermissionDto? dto)
         {
-            var permissions = new List<PermissionDto>();
-
-            foreach (var permission in _permissions)
-            {
-                permissions.Add(new PermissionDto()
-                {
-                    Id = permission.Id,
-                    PermisionName = permission.PermisionName,
-                    PermissionValue = permission.PermissionValue
-                });
-            }
-
-            return permissions;
-        }
-
-        private Permission? GetPermission(int id)
-        {
-            foreach (var permission in _permissions)
-            {
-                if (permission.Id == id)
-                {
-                    return permission;
-                }
-            }
-
-            return null;
+            return dto.AsEntity();
         }
     }
 }

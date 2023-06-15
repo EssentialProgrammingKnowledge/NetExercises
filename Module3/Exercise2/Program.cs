@@ -4,14 +4,20 @@ using System.Security.Claims;
 var tokenService = new TokenService();
 var permissionService = new PermissionService();
 
-var token = tokenService.IssueToken(1, "abc", "admin", new List<Claim>
-{
-    new Claim("value1", "abc"),
-    new Claim("value2", "def"),
+var token = tokenService.IssueToken(new User 
+{ 
+    Id = 1, 
+    UserName = "abc", 
+    Role = "admin", 
+    Claims = new List<Claim> 
+    {
+        new Claim("value1", "abc"),
+        new Claim("value2", "def"),
+    }
 });
 
-var tokenDescription = tokenService.ExtractToken(token);
-Console.WriteLine($"{tokenDescription.userId} {tokenDescription.userName} {tokenDescription.role} {tokenDescription.claims}");
+var user = tokenService.ExtractToken(token);
+Console.WriteLine($"{user.Id} {user.UserName} {user.Role} {user.Claims}");
 
 permissionService.Add(new PermissionDto
 {

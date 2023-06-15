@@ -1,12 +1,8 @@
-﻿using System.Security.Claims;
-
-namespace Exercise2.Management
+﻿namespace Exercise2.Management
 {
-    public class UserService
+    public class UserService : BaseService<User, UserDto>
     {
-        private readonly List<User> _users = new();
-
-        public bool Add(UserDto userDto)
+        public override bool Add(UserDto userDto)
         {
             if (string.IsNullOrWhiteSpace(userDto.UserName))
             {
@@ -18,34 +14,13 @@ namespace Exercise2.Management
                 return false;
             }
 
-            var user = new User()
-            {
-                Id = userDto.Id,
-                UserName = userDto.UserName,
-                Role = userDto.Role,
-                Claims = userDto.Claims,
-            };
-            user.Id = _users.Count > 0 ? _users[^1].Id + 1 : 1;
-            _users.Add(user);
+            base.Add(userDto);
             return true;
         }
 
-        public bool Delete(int id)
+        public override bool Update(UserDto userDto)
         {
-            var user = GetUser(id);
-
-            if (user is null)
-            {
-                return false;
-            }
-
-            _users.Remove(user);
-            return true;
-        }
-
-        public bool Update(UserDto userDto)
-        {
-            var user = GetUser(userDto.Id);
+            var user = GetEntity(userDto.Id);
 
             if (user is null)
             {
@@ -62,59 +37,17 @@ namespace Exercise2.Management
                 return false;
             }
 
-            user.UserName = userDto.UserName;
-            user.Role = userDto.Role;
-            user.Claims = userDto.Claims ?? new List<Claim>();
-            return true;
+            return base.Update(userDto);
         }
 
-        public UserDto? Get(int id)
+        protected override UserDto? Map(User? entity)
         {
-            var user = GetUser(id);
-
-            if (user is null)
-            {
-                return null;
-            }
-
-            return new()
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Role = user.Role,
-                Claims = user.Claims
-            };
+            return entity.AsDto();
         }
 
-        public IReadOnlyList<UserDto> GetAll()
+        protected override User? Map(UserDto? dto)
         {
-            var users = new List<UserDto>();
-
-            foreach (var user in _users)
-            {
-                users.Add(new UserDto()
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Role = user.Role,
-                    Claims = user.Claims
-                });
-            }
-
-            return users;
-        }
-
-        private User? GetUser(int id)
-        {
-            foreach (var user in _users)
-            {
-                if (user.Id == id)
-                {
-                    return user;
-                }
-            }
-
-            return null;
+            return dto.AsEntity();
         }
     }
 }
