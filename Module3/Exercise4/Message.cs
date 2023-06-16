@@ -2,16 +2,21 @@
 {
     public class Message
     {
-        public string Content { get; set; }
+        public string Content { get; }
 
-        public void Send()
+        private Message(string content) 
         {
-            if (string.IsNullOrWhiteSpace(Content))
+            Content = content;
+        }
+
+        public static Message Create(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentNullException($"Invalid arguments, check if not null '{nameof(Content)}'");
+                throw new ArgumentNullException($"Invalid arguments, check if not null '{nameof(value)}'");
             }
 
-            Console.WriteLine("Sent message!");
+            return new Message(value);
         }
 
         public override string ToString()

@@ -1,5 +1,6 @@
 ﻿namespace Exercise4
 {
+    // ten serwis pozostaje bez zmian gdyż wykorzystuje wszystkie funkcjonalności
     public class ProductService : Service<ProductDto>, IService<ProductDto>
     {
         public override int Add(ProductDto dto)
