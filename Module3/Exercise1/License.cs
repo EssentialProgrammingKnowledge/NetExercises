@@ -37,11 +37,21 @@
                 throw new ArgumentException("License is invalid");
             }
 
+            if (IsValidDayOrMonth(day, parts[2]) || IsValidDayOrMonth(month, parts[1]))
+            {
+                throw new ArgumentException("License is invalid");
+            }
+
             // Dodatkowe warunki zgodnie z wzorcem
             if (year < 1000 || month < 1 || month > 12 || day < 1 || day > 31 || additionalDigit < 1)
             {
                 throw new ArgumentException("License is invalid");
             }
+        }
+
+        private static bool IsValidDayOrMonth(int value, string stringValue)
+        {
+            return value < 10 && stringValue.Length < 2;
         }
 
         public override string ToString()
